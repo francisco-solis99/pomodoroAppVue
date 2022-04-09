@@ -14,7 +14,7 @@ import Timer from './components/Timer.vue';
         tasksList: [],
         copyTasks: [],
         taskListRender : false,
-        actualTask: '',
+        actualTask: {},
       };
     },
 
@@ -39,7 +39,6 @@ import Timer from './components/Timer.vue';
       },
 
       finishTask(task){
-        console.log('llego aqui');
         task.finished = true;
         console.log(task);
         this.tasksList = this.tasksList.map(item => task.id === item.id ? task : item);
