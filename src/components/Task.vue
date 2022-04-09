@@ -5,10 +5,11 @@
         props: ['taskText', 'taskCompleted'],
         data() {
             return {
-                finished: this.taskCompleted
+                finished: this.taskCompleted,
             };
         },
         emits: ['start-task'],
+
         computed: {
             btnStyle(){
                 return this.taskCompleted ? ['completed__btn', 'task__button '] : ['task__button', 'incople__task'];

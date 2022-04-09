@@ -1,7 +1,7 @@
 <template>
     <div class="timer__container">
         <h1 class="timer__clock">{{displayTimer}}</h1>
-        <p class="timer__activity">{{actualTask.taskTitle}}</p>
+        <p class="timer__activity" v-if="!this.actualTask.finished">{{actualTask.taskTitle}}</p>
     </div>
 </template>
 
@@ -19,7 +19,6 @@
           return {
             workingTimeInSeconds: this.timeToWork * 60,
             countdown: null,
-            completed: false,
           };
         },
 
@@ -28,7 +27,7 @@
             const minutes = Math.floor(this.workingTimeInSeconds / 60);
             const remindSeconds = this.workingTimeInSeconds % 60;
             const display = `${minutes}:${remindSeconds < 10 ? '0' + remindSeconds : remindSeconds}`;
-            document.title = display;
+            document.title = `${this.actualTask.taskTitle ?? 'Pomodoro'} - ${display}`;
             return display;
           }
         },
@@ -36,6 +35,7 @@
         // methods
         methods: {
           startTimer(){
+            if(this.actualTask.finished) { console.log('ya esta completa la task'); return;}
             clearInterval(this.countdown);
 
             const now = Date.now();
@@ -43,12 +43,12 @@
 
 
             this.countdown = setInterval(() => {
-              console.log('en el interval');
               const seconds = Math.round((then - Date.now()) / 1000);
               if(seconds < 0){
                 clearInterval(this.countdown);
+                this.workingTimeInSeconds = this.timeToWork * 60,
+                document.title = `Pomodoro - ${this.displayTimer}`;
                 this.$emit('compled-task', this.actualTask);
-                console.log('despues del emit');
                 return;
               }
               this.workingTimeInSeconds = seconds;
@@ -56,6 +56,7 @@
           },
         },
 
+        // Vue hooks component
         updated(){
           this.startTimer();
         },
