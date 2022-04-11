@@ -2,6 +2,7 @@
     <div class="timer__container">
         <h1 class="timer__clock">{{displayTimer}}</h1>
         <p class="timer__activity" v-if="!this.actualTask.finished">{{actualTask.taskTitle}}</p>
+        <p class="timer__activity" v-else-if="this.actualTask.inProgress">Break Time</p>
     </div>
 </template>
 
@@ -12,20 +13,20 @@
         props: ['timeToWork', 'timeToRest', 'actualTask'],
 
         // emits
-        emits: ['compled-task'],
+        emits: ['compled-task', 'progress-completed'],
 
         // data
         data() {
           return {
-            workingTimeInSeconds: this.timeToWork * 60,
+            timer: this.timeToWork * 60,
             countdown: null,
           };
         },
 
         computed:{
           displayTimer(){
-            const minutes = Math.floor(this.workingTimeInSeconds / 60);
-            const remindSeconds = this.workingTimeInSeconds % 60;
+            const minutes = Math.floor(this.timer / 60);
+            const remindSeconds = this.timer % 60;
             const display = `${minutes}:${remindSeconds < 10 ? '0' + remindSeconds : remindSeconds}`;
             document.title = `${this.actualTask.taskTitle ?? 'Pomodoro'} - ${display}`;
             return display;
@@ -34,35 +35,38 @@
 
         // methods
         methods: {
-          startTimer(){
-            if(this.actualTask.finished) { console.log('ya esta completa la task'); return;}
+          startPomodoro(){
+            if(!this.actualTask.inProgress) return;
             clearInterval(this.countdown);
-
             const now = Date.now();
-            const then = now + (this.workingTimeInSeconds * 1000);
-
+            const then = now + (this.timer * 1000);
 
             this.countdown = setInterval(() => {
               const seconds = Math.round((then - Date.now()) / 1000);
               if(seconds < 0){
                 clearInterval(this.countdown);
-                this.workingTimeInSeconds = this.timeToWork * 60,
                 document.title = `Pomodoro - ${this.displayTimer}`;
-                this.$emit('compled-task', this.actualTask);
+                if(this.actualTask.finished){
+                  this.timer = this.timeToWork * 60;
+                  this.$emit('progress-completed', this.actualTask.id);
+                }
+                else {
+                  this.timer = this.timeToRest * 60;
+                  this.$emit('compled-task', this.actualTask.id); // emit for cross the task
+                }
                 return;
               }
-              this.workingTimeInSeconds = seconds;
+              this.timer = seconds;
             }, 1000);
+
           },
+
         },
 
         // Vue hooks component
         updated(){
-          this.startTimer();
+          this.startPomodoro();
         },
-
-
-
     };
 </script>
 

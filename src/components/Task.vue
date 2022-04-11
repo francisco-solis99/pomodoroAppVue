@@ -16,12 +16,12 @@
             },
 
             pStyle(){
-                return this.taskCompleted ? ['task__text ', 'completed__task'] : ['task__text'];
+                return this.taskCompleted ? ['task__text', 'completed__task'] : ['task__text'];
             },
         },
         watch:{
             finished(){
-                // this coulb be better
+                // this could be better
                 this.finished ? this.$ref.buttonStart.disabled = true : this.$ref.buttonStart.disabled = false;
             }
         }

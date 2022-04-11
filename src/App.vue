@@ -31,6 +31,7 @@ import Timer from './components/Timer.vue';
         const task = {
           id: this.tasksList.length ? this.tasksList[this.tasksList.length-1].id + 1 : 0,
           taskTitle: textTask,
+          inProgress: false,
           finished: false
         };
         this.tasksList.push(task);
@@ -38,16 +39,27 @@ import Timer from './components/Timer.vue';
 
       },
 
-      finishTask(task){
-        task.finished = true;
-        console.log(task);
-        this.tasksList = this.tasksList.map(item => task.id === item.id ? task : item);
+      finishTask(id){
+        const index = this.findIndexTask(id);
+        if(index === -1) { console.info('This index does not exist'); return;}
+        this.tasksList[index].finished =  true;
         this.saveTasks();
       },
 
-      // maybe apply a getTask function to find the task
+      completePomodoro(id){
+        const index = this.findIndexTask(id);
+        if(index === -1) { console.info('This index does not exist'); return;}
+        this.tasksList[index].inProgress =  false;
+        this.saveTasks();
+      },
+
+      findIndexTask(id){
+        const taskIndex =  this.tasksList.findIndex(item => item.id === id);
+        return taskIndex;
+      },
 
       startTimer(task){
+        task.inProgress = true;
         this.actualTask = task;
       },
 
@@ -60,6 +72,12 @@ import Timer from './components/Timer.vue';
     created(){
       this.saveTasks();
     }
+
+    /* TODO:
+    => 3 dot animation and progress text changed in the button
+    => Keep the changes in Local Storage
+    => Delete the tasks if we wanted
+    */
   };
 </script>
 
@@ -67,7 +85,7 @@ import Timer from './components/Timer.vue';
 <template>
   <main class="pomodoro__hero">
     <h1 class="pomodoro__title">Pomodoro</h1>
-    <Timer v-bind:actualTask = "actualTask" v-on:compled-task="finishTask" :timeToWork="0.1" :timeToRest="5"></Timer>
+    <Timer v-bind:actualTask = "actualTask" v-on:compled-task="finishTask" v-on:progress-completed="completePomodoro" :timeToWork="0.1" :timeToRest="0.2"></Timer>
     <AddTask v-on:add-task="addTask"></AddTask>
     <section class="pomodoro__tasksList" v-if="taskListRender">
       <TasksList v-bind:tasks="copyTasks" v-on:start-task="startTimer"></TasksList>
