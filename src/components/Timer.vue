@@ -1,3 +1,4 @@
+<!-- HTML -->
 <template>
     <div class="timer__container">
         <h1 class="timer__clock">{{displayTimer}}</h1>
@@ -6,6 +7,7 @@
     </div>
 </template>
 
+<!-- JS -->
 <script>
     export default {
         name: 'TimerTask',
@@ -81,5 +83,21 @@
     };
 </script>
 
+<!-- CSS -->
 <style scoped>
+.timer__container {
+  margin: 10px 0;
+  text-align: center;
+}
+.timer__clock {
+  font-size: 2.3rem;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.30);
+  color: white;
+}
+
+.timer__activity {
+  font-size: 1.4rem;
+  color: rgb(240, 240, 240);
+}
+
 </style>

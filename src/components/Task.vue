@@ -1,18 +1,14 @@
+<!-- JS -->
 <script>
 
     export default {
         name: 'PomodoroTask',
-        props: ['taskText', 'taskCompleted'],
-        data() {
-            return {
-                finished: this.taskCompleted,
-            };
-        },
+        props: ['taskText', 'taskCompleted', 'taskInProgress'],
         emits: ['start-task'],
 
         computed: {
             btnStyle(){
-                return this.taskCompleted ? ['completed__btn', 'task__button '] : ['task__button', 'incople__task'];
+                return this.taskCompleted ? ['completed__btn', 'task__button '] : ['task__button', 'incompled__task'];
             },
 
             pStyle(){
@@ -20,21 +16,34 @@
             },
         },
         watch:{
-            finished(){
-                // this could be better
-                this.finished ? this.$ref.buttonStart.disabled = true : this.$ref.buttonStart.disabled = false;
+            taskCompleted(newValue){
+                if(newValue){
+                   this.$refs.buttonStart.disabled = true;
+                   this.$refs.buttonStart.textContent = 'Done';
+                }
+            },
+
+            taskInProgress(newValue) {
+                if(newValue) this.$refs.buttonStart.textContent = 'In Progress';
             }
+
         }
     };
 </script>
 
+<!-- HTML -->
 <template>
       <button :class="btnStyle" @click="$emit('start-task', taskText)" ref="buttonStart">Start</button>
       <p :class="pStyle">{{taskText}}</p>
 </template>
 
+
+<!-- CSS -->
 <style scoped>
     .task__button {
+        min-width: min-content;
+        width: 30%;
+        max-width: 80px;
         padding: 10px;
         border: none;
     }
@@ -49,7 +58,7 @@
         text-decoration: line-through;
     }
 
-    .incople__task {
+    .incompled__task {
         color: white;
         background-color: var(--color-buttons);
         cursor: pointer;

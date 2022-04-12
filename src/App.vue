@@ -11,7 +11,7 @@ import Timer from './components/Timer.vue';
     // data
     data() {
       return {
-        tasksList: [],
+        tasksList: JSON.parse(localStorage.getItem('tasks')) ?? [],
         copyTasks: [],
         taskListRender : false,
         actualTask: {},
@@ -65,6 +65,7 @@ import Timer from './components/Timer.vue';
 
        saveTasks(){
         this.copyTasks = [...this.tasksList];
+        localStorage.setItem('tasks', JSON.stringify([...this.copyTasks]));
       },
     },
 
@@ -74,8 +75,6 @@ import Timer from './components/Timer.vue';
     }
 
     /* TODO:
-    => 3 dot animation and progress text changed in the button
-    => Keep the changes in Local Storage
     => Delete the tasks if we wanted
     => Documentate the app
     */
@@ -103,6 +102,7 @@ import Timer from './components/Timer.vue';
   display: grid;
   place-items: center;
   min-height: 100vh;
+  min-width: 300px;
   background: linear-gradient(-45deg, transparent 10%, var(--color-line) 10% 20%, transparent 20% 80%, var(--color-line) 80% 90%, transparent 90% 100%);
   background-color: var(--color-background);
 }
@@ -120,7 +120,7 @@ import Timer from './components/Timer.vue';
 
 .pomodoro__title {
   margin-bottom: 10px;
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: bold;
   color: white;
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
@@ -130,10 +130,11 @@ import Timer from './components/Timer.vue';
   width: 100%;
   padding: 10px;
   margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.75);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  gap: 30px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  background-color: rgba(255, 255, 255, 0.75);
+  justify-items: center;
 }
 
 .pomodoro__default {

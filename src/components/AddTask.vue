@@ -37,8 +37,8 @@
 <!-- CSS -->
 <style scoped>
   .add-task__container {
-    width: 80%;
     background-color: tomato;
+    width: 60%;
   }
 
   .add-task__form {
@@ -47,7 +47,7 @@
   }
 
   .add-task__input {
-    flex:2;
+    width: 75%;
     padding: 15px;
     border: 0;
     outline: 0;
@@ -55,7 +55,8 @@
   }
 
   .add-task__button {
-    flex: 0.5;
+    min-width: min-content;
+    width: 25%;
     border: 0;
     background-color: var( --color-buttons);
     color: white;
