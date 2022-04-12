@@ -77,6 +77,7 @@ import Timer from './components/Timer.vue';
     => 3 dot animation and progress text changed in the button
     => Keep the changes in Local Storage
     => Delete the tasks if we wanted
+    => Documentate the app
     */
   };
 </script>

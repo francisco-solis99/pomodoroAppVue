@@ -17,6 +17,7 @@
         }
         this.$emit('add-task', this.textTask);
         e.target.reset(); //clean the form
+        this.textTask = '';
       }
     }
   };
