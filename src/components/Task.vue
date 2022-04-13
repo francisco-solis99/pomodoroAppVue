@@ -1,10 +1,13 @@
 <!-- JS -->
 <script>
-
+    import PomodoroIcon from './PomodoroIcon.vue';
     export default {
         name: 'PomodoroTask',
         props: ['taskText', 'taskCompleted', 'taskInProgress'],
-        emits: ['start-task'],
+        emits: ['start-task', 'delete-task'],
+        components: {
+             PomodoroIcon
+        },
 
         computed: {
             btnStyle(){
@@ -33,8 +36,9 @@
 
 <!-- HTML -->
 <template>
-      <button :class="btnStyle" @click="$emit('start-task', taskText)" ref="buttonStart">Start</button>
+      <button :class="btnStyle" @click="$emit('start-task', taskText)" ref="buttonStart">{{this.taskCompleted ? 'Done' : 'Start'}}</button>
       <p :class="pStyle">{{taskText}}</p>
+      <span class="close__icon" @click="$emit('delete-task')"><PomodoroIcon name="close"></PomodoroIcon></span>
 </template>
 
 
@@ -68,6 +72,16 @@
         color: black;
         background-color: rgb(170, 170, 170);
         cursor: not-allowed;
+    }
+
+    .close__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
     }
 
 

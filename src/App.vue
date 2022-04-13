@@ -39,6 +39,12 @@ import Timer from './components/Timer.vue';
 
       },
 
+      deleteTask(idTask){
+        const index = this.findIndexTask(idTask);
+        this.tasksList.splice(index, 1);
+        this.saveTasks();
+      },
+
       finishTask(id){
         const index = this.findIndexTask(id);
         if(index === -1) { console.info('This index does not exist'); return;}
@@ -85,10 +91,15 @@ import Timer from './components/Timer.vue';
 <template>
   <main class="pomodoro__hero">
     <h1 class="pomodoro__title">Pomodoro</h1>
-    <Timer v-bind:actualTask = "actualTask" v-on:compled-task="finishTask" v-on:progress-completed="completePomodoro" :timeToWork="0.1" :timeToRest="0.2"></Timer>
+    <Timer
+    v-bind:actualTask = "actualTask"
+    v-on:compled-task="finishTask"
+    v-on:progress-completed="completePomodoro"
+    :timeToWork="0.1" :timeToRest="0.2">
+    </Timer>
     <AddTask v-on:add-task="addTask"></AddTask>
     <section class="pomodoro__tasksList" v-if="taskListRender">
-      <TasksList v-bind:tasks="copyTasks" v-on:start-task="startTimer"></TasksList>
+      <TasksList v-bind:tasks="copyTasks" v-on:start-task="startTimer" v-on:delete-task="deleteTask"></TasksList>
     </section>
     <p class="pomodoro__default" v-else>Add something to do 😀</p>
   </main>
