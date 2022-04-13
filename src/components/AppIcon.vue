@@ -1,6 +1,6 @@
 <script>
   export default {
-    name: 'PomodoroIcon',
+    name: 'AppIcon',
     props:['name'],
   };
 </script>

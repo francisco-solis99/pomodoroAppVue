@@ -1,12 +1,12 @@
 <!-- JS -->
 <script>
 // import the components to use
-import AddTask from './components/AddTask.vue';
-import TasksList from './components/TasksList.vue';
-import Timer from './components/Timer.vue';
+import TaskToAdd from './components/TaskToAdd.vue';
+import TaskList from './components/TaskList.vue';
+import TaskTimer from './components/TaskTimer.vue';
   export default {
     name: "App",
-    components: { AddTask, TasksList, Timer },
+    components: { 'task-to-add':TaskToAdd, 'task-list':TaskList, 'task-timer':TaskTimer },
 
     // data
     data() {
@@ -81,8 +81,9 @@ import Timer from './components/Timer.vue';
     }
 
     /* TODO:
-    => Delete the tasks if we wanted
     => Documentate the app
+    => Add sound with AUDIO API
+    => Add in progress animation
     */
   };
 </script>
@@ -91,15 +92,21 @@ import Timer from './components/Timer.vue';
 <template>
   <main class="pomodoro__hero">
     <h1 class="pomodoro__title">Pomodoro</h1>
-    <Timer
+
+    <!-- timer component -->
+    <task-timer
     v-bind:actualTask = "actualTask"
     v-on:compled-task="finishTask"
     v-on:progress-completed="completePomodoro"
     :timeToWork="0.1" :timeToRest="0.2">
-    </Timer>
-    <AddTask v-on:add-task="addTask"></AddTask>
+    </task-timer>
+
+    <!-- add task component -->
+    <task-to-add v-on:add-task="addTask"></task-to-add>
+
+    <!-- tasks list component -->
     <section class="pomodoro__tasksList" v-if="taskListRender">
-      <TasksList v-bind:tasks="copyTasks" v-on:start-task="startTimer" v-on:delete-task="deleteTask"></TasksList>
+      <task-list v-bind:tasks="copyTasks" v-on:start-task="startTimer" v-on:delete-task="deleteTask"></task-list>
     </section>
     <p class="pomodoro__default" v-else>Add something to do 😀</p>
   </main>

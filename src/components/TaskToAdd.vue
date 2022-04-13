@@ -1,7 +1,7 @@
 <!-- JS -->
 <script>
   export default {
-    name: 'AddTask',
+    name: 'TaskToAdd',
     props: {},
     emits: ['add-task'],
     data() {

@@ -1,12 +1,12 @@
 <!-- JS -->
 <script>
-    import PomodoroIcon from './PomodoroIcon.vue';
+    import AppIcon from './AppIcon.vue';
     export default {
-        name: 'PomodoroTask',
+        name: 'TaskListItem',
         props: ['taskText', 'taskCompleted', 'taskInProgress'],
         emits: ['start-task', 'delete-task'],
         components: {
-             PomodoroIcon
+             'app-icon':AppIcon
         },
 
         computed: {
@@ -38,7 +38,10 @@
 <template>
       <button :class="btnStyle" @click="$emit('start-task', taskText)" ref="buttonStart">{{this.taskCompleted ? 'Done' : 'Start'}}</button>
       <p :class="pStyle">{{taskText}}</p>
-      <span class="close__icon" @click="$emit('delete-task')"><PomodoroIcon name="close"></PomodoroIcon></span>
+      <!-- Icon to delete the tasks -->
+      <span class="close__icon" @click="$emit('delete-task')">
+        <app-icon name="close"></app-icon>
+      </span>
 </template>
 
 
@@ -82,6 +85,10 @@
         top: 0;
         right: 0;
         cursor: pointer;
+    }
+
+    .close__icon:active {
+        transform: scale(1.1);
     }
 
 
